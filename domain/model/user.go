@@ -6,45 +6,45 @@ import (
 )
 
 type User struct {
-	base
-	name     string
-	email    string
-	password string
+	Base
+	Name     string
+	Email    string
+	Password string
 }
 
-func New(n, e, p string) (*User, error) {
-	if err := validation(n, e, p); err != nil {
+func NewUser(name, email, password string) (*User, error) {
+	if err := validation(name, email, password); err != nil {
 		return nil, err
 	}
 	u := &User{
-		name:     n,
-		email:    e,
-		password: p,
+		Name:     name,
+		Email:    email,
+		Password: password,
 	}
 	return u, nil
 }
 
-func validation(n, e, p string) error {
-	if n == "" {
+func validation(name, email, password string) error {
+	if name == "" {
 		return errors.New("名前を入力してください")
 	}
-	if e == "" {
+	if email == "" {
 		return errors.New("メールアドレスを入力してください")
 	}
-	if isEmailTypeValid(e) {
+	if isEmailTypeInvalid(email) {
 		return errors.New("正しい形式でメールアドレスを入力してください")
 	}
-	if p == "" {
+	if password == "" {
 		return errors.New("パスワードを入力してください")
 	}
-	if len(n) >= 6 {
+	if len(password) < 6 {
 		return errors.New("パスワードは6文字以上入力してください")
 	}
 	return nil
 }
 
-func isEmailTypeValid(e string) bool {
-	str := `^[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z$`
-	r := regexp.MustCompile(str)
-	return r.MatchString(e)
+func isEmailTypeInvalid(email string) bool {
+	s := `^[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z$`
+	r := regexp.MustCompile(s)
+	return !r.MatchString(email)
 }

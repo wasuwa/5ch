@@ -2,9 +2,8 @@ package model
 
 import "time"
 
-type base struct {
-	id        uint
-	createdAt time.Time
-	updatedAt time.Time
-	deletedAt time.Time
+type Base struct {
+	ID        uint
+	CreatedAt time.Time
+	UpdatedAt time.Time
 }

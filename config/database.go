@@ -5,8 +5,8 @@ import (
 	"gorm.io/gorm"
 )
 
-func NewDB() *gorm.DB {
-	dsn := ""
+func InitDB() *gorm.DB {
+	dsn := "postgres://suwayouta:@localhost/bbs?sslmode=disable"
 	db, err := gorm.Open(postgres.Open(dsn))
 	if err != nil {
 		panic(err)
