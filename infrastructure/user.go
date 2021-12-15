@@ -21,15 +21,3 @@ func (ur *UserRepository) CreateUser(u *model.User) (*model.User, error) {
 	}
 	return u, nil
 }
-
-func (ur *UserRepository) FindUser(id uint) (*model.User, error) {
-
-}
-
-func (ur *UserRepository) UpdateUser(u *model.User) (*model.User, error) {
-
-}
-
-func (ur *UserRepository) DestroyUser(id uint) error {
-
-}

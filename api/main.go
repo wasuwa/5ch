@@ -15,5 +15,6 @@ func main() {
 	userHandler := handler.NewUserHandler(userUsecase)
 
 	e := echo.New()
+	handler.RoutingUsers(e, userHandler)
 	e.Start(":8080")
 }

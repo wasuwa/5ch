@@ -19,5 +19,11 @@ func NewUserHandler(uu usecase.UserUsecase) UserHandler {
 }
 
 func (th *userHandler) Post() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		return nil
+	}
+}
 
+func RoutingUsers(e *echo.Echo, uh UserHandler) {
+	e.POST("/users", uh.Post())
 }

@@ -18,5 +18,5 @@ func NewUserUsecase(ur repository.UserRepository) UserUsecase {
 }
 
 func (uu *userUsecase) Create(name, email, password string) (*model.User, error) {
-
+	return nil, nil
 }
