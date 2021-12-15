@@ -1,0 +1,6 @@
+run:
+	@go run api/main.go
+fmt:
+	@go fmt ./...
+lint:
+	@go vet ./...; golint ./...
