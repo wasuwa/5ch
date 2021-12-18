@@ -3,26 +3,24 @@ package model
 import (
 	"errors"
 	"time"
-
-	"golang.org/x/crypto/bcrypt"
 )
 
 type User struct {
 	Base
 	Name     string
 	Email    Email
-	Password string
+	Password Password
 }
 
 func NewUser(name, email, password string) (*User, error) {
-	if err := validation(name, email, password); err != nil {
-		return nil, err
+	if name == "" {
+		return nil, errors.New("名前を入力してください")
 	}
-	p, err := hashPassword(password)
+	e, err := newEmail(email)
 	if err != nil {
 		return nil, err
 	}
-	e, err := NewEmail(email)
+	p, err := newPassword(password)
 	if err != nil {
 		return nil, err
 	}
@@ -46,7 +44,7 @@ func (u *User) GetEmail() Email {
 	return u.Email
 }
 
-func (u *User) GetPassword() string {
+func (u *User) GetPassword() Password {
 	return u.Password
 }
 
@@ -56,25 +54,4 @@ func (u *User) GetCreatedAt() time.Time {
 
 func (u *User) GetUpdatedAt() time.Time {
 	return u.CreatedAt
-}
-
-func validation(name, email, password string) error {
-	if name == "" {
-		return errors.New("名前を入力してください")
-	}
-	if email == "" {
-		return errors.New("メールアドレスを入力してください")
-	}
-	if password == "" {
-		return errors.New("パスワードを入力してください")
-	}
-	if len(password) < 6 {
-		return errors.New("パスワードは6文字以上入力してください")
-	}
-	return nil
-}
-
-func hashPassword(pass string) (string, error) {
-	h, err := bcrypt.GenerateFromPassword([]byte(pass), 12)
-	return string(h), err
 }

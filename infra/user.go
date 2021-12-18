@@ -37,6 +37,15 @@ func (ur *UserRepository) FindByID(id uint) (*model.User, error) {
 	return u, nil
 }
 
+func (ur *UserRepository) FindByEmail(email string) (*model.User, error) {
+	u := new(model.User)
+	result := ur.Conn.Where("email = ?", email).Find(u)
+	if err := result.Error; err != nil {
+		return nil, err
+	}
+	return u, nil
+}
+
 func (ur *UserRepository) Create(u *model.User) (*model.User, error) {
 	if err := ur.Conn.Create(u).Error; err != nil {
 		return nil, err
