@@ -64,3 +64,14 @@ func (ur *UserRepository) Update(u *model.User, id uint) error {
 	}
 	return nil
 }
+
+func (ur *UserRepository) Delete(id uint) error {
+	u := new(model.User)
+	result := ur.Conn.Delete(u, id)
+	if err := result.Error; err != nil {
+		return err
+	} else if result.RowsAffected == 0 {
+		return gorm.ErrRecordNotFound
+	}
+	return nil
+}

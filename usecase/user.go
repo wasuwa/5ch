@@ -11,6 +11,7 @@ type UserUsecase interface {
 	Find(id uint) (*model.User, error)
 	Create(name, email, password string) (*model.User, error)
 	Update(id uint, name, email, password string) error
+	Delete(id uint) error
 }
 
 type userUsecase struct {
@@ -66,6 +67,13 @@ func (uu *userUsecase) Update(id uint, name, email, password string) error {
 		return err
 	}
 	if err := uu.userRepository.Update(u, id); err != nil {
+		return err
+	}
+	return nil
+}
+
+func (uu *userUsecase) Delete(id uint) error {
+	if err := uu.userRepository.Delete(id); err != nil {
 		return err
 	}
 	return nil

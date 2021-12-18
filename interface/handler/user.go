@@ -12,9 +12,10 @@ import (
 
 type UserHandler interface {
 	GetAll() echo.HandlerFunc
-	Get() echo.HandlerFunc
-	Post() echo.HandlerFunc
-	Patch() echo.HandlerFunc
+	Get()    echo.HandlerFunc
+	Post()   echo.HandlerFunc
+	Patch()  echo.HandlerFunc
+	Delete() echo.HandlerFunc
 }
 
 type userHandler struct {
@@ -49,6 +50,7 @@ func RoutingUsers(e *echo.Echo, uh UserHandler) {
 	e.GET("/users/:id", uh.Get())
 	e.POST("/users", uh.Post())
 	e.PATCH("/users/:id", uh.Patch())
+	e.DELETE("/users/:id", uh.Delete())
 }
 
 func (uh *userHandler) GetAll() echo.HandlerFunc {
@@ -103,6 +105,19 @@ func (uh *userHandler) Patch() echo.HandlerFunc {
 			return c.JSONPretty(http.StatusBadRequest, err.Error(), " ")
 		}
 		if err := uh.userUsecase.Update(uint(id), req.Name, req.Email, req.Password); err != nil {
+			return c.JSONPretty(http.StatusNotFound, err.Error(), " ")
+		}
+		return c.JSON(http.StatusNoContent, nil)
+	}
+}
+
+func (uh *userHandler) Delete() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		id, err := strconv.Atoi(c.Param("id"))
+		if err != nil {
+			return c.JSONPretty(http.StatusBadRequest, err.Error(), " ")
+		}
+		if err := uh.userUsecase.Delete(uint(id)); err != nil {
 			return c.JSONPretty(http.StatusNotFound, err.Error(), " ")
 		}
 		return c.JSON(http.StatusNoContent, nil)

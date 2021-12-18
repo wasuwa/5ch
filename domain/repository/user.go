@@ -8,4 +8,5 @@ type UserRepository interface {
 	FindByEmail(u *model.User) (*model.User, error)
 	Create(u *model.User) (*model.User, error)
 	Update(u *model.User, id uint) error
+	Delete(id uint) error
 }
