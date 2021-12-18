@@ -3,6 +3,7 @@ package usecase
 import (
 	"ddd-sample/domain/model"
 	"ddd-sample/domain/repository"
+	"ddd-sample/domain/service"
 )
 
 type UserUsecase interface {
@@ -41,6 +42,11 @@ func (uu *userUsecase) Create(name, email, password string) (*model.User, error)
 	if err != nil {
 		return nil, err
 	}
+	us := service.NewUser(u.GetEmail())
+	ok, err := us.Exists(uu.userRepository, u)
+	if ok {
+		return nil, err
+	}
 	u, err = uu.userRepository.Create(u)
 	if err != nil {
 		return nil, err
@@ -51,6 +57,12 @@ func (uu *userUsecase) Create(name, email, password string) (*model.User, error)
 func (uu *userUsecase) Update(id uint, name, email, password string) error {
 	u, err := model.NewUser(name, email, password)
 	if err != nil {
+		return err
+	}
+	u.SetID(id)
+	us := service.NewUser(u.GetEmail())
+	ok, err := us.Exists(uu.userRepository, u)
+	if ok {
 		return err
 	}
 	if err := uu.userRepository.Update(u, id); err != nil {

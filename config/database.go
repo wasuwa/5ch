@@ -6,7 +6,7 @@ import (
 )
 
 func InitDB() *gorm.DB {
-	dsn := "postgres://suwayouta:@localhost/ddd-sample?sslmode=disable"
+	dsn := "postgres://suwayouta:@localhost/ddd_sample?sslmode=disable"
 	db, err := gorm.Open(postgres.Open(dsn))
 	if err != nil {
 		panic(err)

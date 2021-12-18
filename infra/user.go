@@ -37,11 +37,13 @@ func (ur *UserRepository) FindByID(id uint) (*model.User, error) {
 	return u, nil
 }
 
-func (ur *UserRepository) FindByEmail(email string) (*model.User, error) {
-	u := new(model.User)
-	result := ur.Conn.Where("email = ?", email).Find(u)
+func (ur *UserRepository) FindByEmail(u *model.User) (*model.User, error) {
+	nu := new(model.User)
+	result := ur.Conn.Debug().Where("email = ? AND id != ?", u.GetEmail(), u.GetID()).Find(nu)
 	if err := result.Error; err != nil {
 		return nil, err
+	} else if result.RowsAffected > 0 {
+		return nil, gorm.ErrRegistered
 	}
 	return u, nil
 }
