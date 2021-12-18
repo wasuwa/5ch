@@ -1,5 +1,5 @@
 ## 概要
-5ch を模した掲示板アプリ。
+Go で作成した Sample API
 
 ## アーキテクチャ
 - DDD
@@ -12,3 +12,11 @@
 - PostgreSQL
 
 ## API
+### Users
+|      | メソッド | URI |
+| ---- | ---- | ---- |
+| 一覧表示 | GET | /users |
+| 個別表示 | GET | /users/:id |
+| 作成 | POST | /users |
+| 更新 | PATCH | /users/:id |
+| 削除 | DELETE | /users/:id |
