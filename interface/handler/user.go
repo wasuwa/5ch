@@ -28,12 +28,12 @@ type requestUser struct {
 }
 
 type responseUser struct {
-	ID        uint      `json:"id"`
-	Name      string    `json:"name"`
-	Email     string    `json:"email"`
-	Password  string    `json:"password"`
-	CreatedAt time.Time `json:"createdAt"`
-	UpdatedAt time.Time `json:"updatedAt"`
+	ID        uint        `json:"id"`
+	Name      string      `json:"name"`
+	Email     model.Email `json:"email"`
+	Password  string      `json:"password"`
+	CreatedAt time.Time   `json:"createdAt"`
+	UpdatedAt time.Time   `json:"updatedAt"`
 }
 
 type responseAllUser struct {

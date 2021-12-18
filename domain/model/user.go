@@ -2,7 +2,6 @@ package model
 
 import (
 	"errors"
-	"regexp"
 	"time"
 
 	"golang.org/x/crypto/bcrypt"
@@ -11,7 +10,7 @@ import (
 type User struct {
 	Base
 	Name     string
-	Email    string
+	Email    Email
 	Password string
 }
 
@@ -23,9 +22,13 @@ func NewUser(name, email, password string) (*User, error) {
 	if err != nil {
 		return nil, err
 	}
+	e, err := NewEmail(email)
+	if err != nil {
+		return nil, err
+	}
 	u := &User{
 		Name:     name,
-		Email:    email,
+		Email:    e,
 		Password: p,
 	}
 	return u, nil
@@ -39,7 +42,7 @@ func (u *User) GetName() string {
 	return u.Name
 }
 
-func (u *User) GetEmail() string {
+func (u *User) GetEmail() Email {
 	return u.Email
 }
 
@@ -62,9 +65,6 @@ func validation(name, email, password string) error {
 	if email == "" {
 		return errors.New("メールアドレスを入力してください")
 	}
-	if isEmailTypeInvalid(email) {
-		return errors.New("正しい形式でメールアドレスを入力してください")
-	}
 	if password == "" {
 		return errors.New("パスワードを入力してください")
 	}
@@ -72,12 +72,6 @@ func validation(name, email, password string) error {
 		return errors.New("パスワードは6文字以上入力してください")
 	}
 	return nil
-}
-
-func isEmailTypeInvalid(email string) bool {
-	s := `^[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z$`
-	r := regexp.MustCompile(s)
-	return !r.MatchString(email)
 }
 
 func hashPassword(pass string) (string, error) {
