@@ -1,8 +1,8 @@
 package infra
 
 import (
-	"bbs/domain/model"
-	"bbs/domain/repository"
+	"ddd-sample/domain/model"
+	"ddd-sample/domain/repository"
 
 	"gorm.io/gorm"
 )

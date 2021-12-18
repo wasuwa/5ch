@@ -1,8 +1,8 @@
 package handler
 
 import (
-	"bbs/domain/model"
-	"bbs/usecase"
+	"ddd-sample/domain/model"
+	"ddd-sample/usecase"
 	"net/http"
 	"strconv"
 	"time"

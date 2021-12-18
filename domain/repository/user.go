@@ -1,6 +1,6 @@
 package repository
 
-import "bbs/domain/model"
+import "ddd-sample/domain/model"
 
 type UserRepository interface {
 	All() (*[]model.User, error)

@@ -1,8 +1,8 @@
 package usecase
 
 import (
-	"bbs/domain/model"
-	"bbs/domain/repository"
+	"ddd-sample/domain/model"
+	"ddd-sample/domain/repository"
 )
 
 type UserUsecase interface {

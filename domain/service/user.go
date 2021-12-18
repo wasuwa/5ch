@@ -1,6 +1,6 @@
 package service
 
-import "bbs/domain/repository"
+import "ddd-sample/domain/repository"
 
 type UserService struct {
 	email string

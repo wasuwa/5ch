@@ -1,10 +1,10 @@
 package main
 
 import (
-	"bbs/config"
-	"bbs/infra"
-	"bbs/interface/handler"
-	"bbs/usecase"
+	"ddd-sample/config"
+	"ddd-sample/infra"
+	"ddd-sample/interface/handler"
+	"ddd-sample/usecase"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
