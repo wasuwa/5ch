@@ -3,6 +3,7 @@ package handler
 import (
 	"bbs/usecase"
 	"net/http"
+	"time"
 
 	"github.com/labstack/echo/v4"
 )
@@ -17,8 +18,17 @@ type userHandler struct {
 
 type requestUser struct {
 	Name     string `json:"name"`
-	Email    string `json:"email`
+	Email    string `json:"email"`
 	Password string `json:"password"`
+}
+
+type responseUser struct {
+	ID        uint      `json:"id"`
+	Name      string    `json:"name"`
+	Email     string    `json:"email"`
+	Password  string    `json:"password"`
+	CreatedAt time.Time `json:"createdAt"`
+	UpdatedAt time.Time `json:"updatedAt"`
 }
 
 func NewUserHandler(uu usecase.UserUsecase) UserHandler {
@@ -35,7 +45,15 @@ func (uh *userHandler) Post() echo.HandlerFunc {
 		if err != nil {
 			return c.JSONPretty(http.StatusBadRequest, err.Error(), " ")
 		}
-		return c.JSONPretty(http.StatusCreated, u, " ")
+		res := &responseUser{
+			ID:        u.GetID(),
+			Name:      u.GetName(),
+			Email:     u.GetEmail(),
+			Password:  u.GetPassword(),
+			CreatedAt: u.GetCreatedAt(),
+			UpdatedAt: u.GetUpdatedAt(),
+		}
+		return c.JSONPretty(http.StatusCreated, res, " ")
 	}
 }
 
