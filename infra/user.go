@@ -17,10 +17,10 @@ func NewUserRepository(conn *gorm.DB) repository.UserRepository {
 
 func (ur *UserRepository) All() (*[]model.User, error) {
 	users := new([]model.User)
-	ur.Conn = ur.Conn.Find(users)
-	if err := ur.Conn.Error; err != nil {
+	result := ur.Conn.Find(users)
+	if err := result.Error; err != nil {
 		return nil, err
-	} else if ur.Conn.RowsAffected == 0 {
+	} else if result.RowsAffected == 0 {
 		return nil, gorm.ErrRecordNotFound
 	}
 	return users, nil
@@ -28,10 +28,10 @@ func (ur *UserRepository) All() (*[]model.User, error) {
 
 func (ur *UserRepository) Find(id uint) (*model.User, error) {
 	u := new(model.User)
-	ur.Conn = ur.Conn.Where("id = ?", id).Find(u)
-	if err := ur.Conn.Error; err != nil {
+	result := ur.Conn.Where("id = ?", id).Find(u)
+	if err := result.Error; err != nil {
 		return nil, err
-	} else if ur.Conn.RowsAffected == 0 {
+	} else if result.RowsAffected == 0 {
 		return nil, gorm.ErrRecordNotFound
 	}
 	return u, nil
@@ -45,10 +45,10 @@ func (ur *UserRepository) Create(u *model.User) (*model.User, error) {
 }
 
 func (ur *UserRepository) Update(u *model.User, id uint) error {
-	ur.Conn = ur.Conn.Where("id = ?", id).Updates(u)
-	if err := ur.Conn.Error; err != nil {
+	result := ur.Conn.Where("id = ?", id).Updates(u)
+	if err := result.Error; err != nil {
 		return err
-	} else if ur.Conn.RowsAffected == 0 {
+	} else if result.RowsAffected == 0 {
 		return gorm.ErrRecordNotFound
 	}
 	return nil
