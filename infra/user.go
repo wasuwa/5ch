@@ -15,7 +15,7 @@ func NewUserRepository(conn *gorm.DB) repository.UserRepository {
 	return &UserRepository{Conn: conn}
 }
 
-func (ur *UserRepository) Index() (*[]model.User, error) {
+func (ur *UserRepository) All() (*[]model.User, error) {
 	users := new([]model.User)
 	ur.Conn = ur.Conn.Find(users)
 	if err := ur.Conn.Error; err != nil {
@@ -25,6 +25,18 @@ func (ur *UserRepository) Index() (*[]model.User, error) {
 		return nil, gorm.ErrRecordNotFound
 	}
 	return users, nil
+}
+
+func (ur *UserRepository) Find(id uint) (*model.User, error) {
+	u := new(model.User)
+	ur.Conn = ur.Conn.Where("id = ?", id).Find(u)
+	if err := ur.Conn.Error; err != nil {
+		return nil, err
+	}
+	if ur.Conn.RowsAffected == 0 {
+		return nil, gorm.ErrRecordNotFound
+	}
+	return u, nil
 }
 
 func (ur *UserRepository) Create(u *model.User) (*model.User, error) {

@@ -7,6 +7,7 @@ import (
 
 type UserUsecase interface {
 	Index() (*[]model.User, error)
+	Find(id uint) (*model.User, error)
 	Create(name, email, password string) (*model.User, error)
 }
 
@@ -19,11 +20,19 @@ func NewUserUsecase(ur repository.UserRepository) UserUsecase {
 }
 
 func (uu *userUsecase) Index() (*[]model.User, error) {
-	users, err := uu.userRepository.Index()
+	users, err := uu.userRepository.All()
 	if err != nil {
 		return nil, err
 	}
 	return users, nil
+}
+
+func (uu *userUsecase) Find(id uint) (*model.User, error) {
+	u, err := uu.userRepository.Find(id)
+	if err != nil {
+		return nil, err
+	}
+	return u, nil
 }
 
 func (uu *userUsecase) Create(name, email, password string) (*model.User, error) {
