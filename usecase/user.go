@@ -9,6 +9,7 @@ type UserUsecase interface {
 	Index() (*[]model.User, error)
 	Find(id uint) (*model.User, error)
 	Create(name, email, password string) (*model.User, error)
+	Update(id uint, name, email, password string) error
 }
 
 type userUsecase struct {
@@ -45,4 +46,15 @@ func (uu *userUsecase) Create(name, email, password string) (*model.User, error)
 		return nil, err
 	}
 	return u, nil
+}
+
+func (uu *userUsecase) Update(id uint, name, email, password string) error {
+	u, err := model.NewUser(name, email, password)
+	if err != nil {
+		return err
+	}
+	if err := uu.userRepository.Update(u, id); err != nil {
+		return err
+	}
+	return nil
 }

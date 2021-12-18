@@ -20,8 +20,7 @@ func (ur *UserRepository) All() (*[]model.User, error) {
 	ur.Conn = ur.Conn.Find(users)
 	if err := ur.Conn.Error; err != nil {
 		return nil, err
-	}
-	if ur.Conn.RowsAffected == 0 {
+	} else if ur.Conn.RowsAffected == 0 {
 		return nil, gorm.ErrRecordNotFound
 	}
 	return users, nil
@@ -32,8 +31,7 @@ func (ur *UserRepository) Find(id uint) (*model.User, error) {
 	ur.Conn = ur.Conn.Where("id = ?", id).Find(u)
 	if err := ur.Conn.Error; err != nil {
 		return nil, err
-	}
-	if ur.Conn.RowsAffected == 0 {
+	} else if ur.Conn.RowsAffected == 0 {
 		return nil, gorm.ErrRecordNotFound
 	}
 	return u, nil
@@ -44,4 +42,14 @@ func (ur *UserRepository) Create(u *model.User) (*model.User, error) {
 		return nil, err
 	}
 	return u, nil
+}
+
+func (ur *UserRepository) Update(u *model.User, id uint) error {
+	ur.Conn = ur.Conn.Where("id = ?", id).Updates(u)
+	if err := ur.Conn.Error; err != nil {
+		return err
+	} else if ur.Conn.RowsAffected == 0 {
+		return gorm.ErrRecordNotFound
+	}
+	return nil
 }
