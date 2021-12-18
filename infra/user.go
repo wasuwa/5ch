@@ -26,7 +26,7 @@ func (ur *UserRepository) All() (*[]model.User, error) {
 	return users, nil
 }
 
-func (ur *UserRepository) Find(id uint) (*model.User, error) {
+func (ur *UserRepository) FindByID(id uint) (*model.User, error) {
 	u := new(model.User)
 	result := ur.Conn.Where("id = ?", id).Find(u)
 	if err := result.Error; err != nil {

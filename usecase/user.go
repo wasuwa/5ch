@@ -29,7 +29,7 @@ func (uu *userUsecase) Index() (*[]model.User, error) {
 }
 
 func (uu *userUsecase) Find(id uint) (*model.User, error) {
-	u, err := uu.userRepository.Find(id)
+	u, err := uu.userRepository.FindByID(id)
 	if err != nil {
 		return nil, err
 	}
