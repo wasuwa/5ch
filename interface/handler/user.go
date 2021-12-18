@@ -29,7 +29,7 @@ type requestUser struct {
 
 type responseUser struct {
 	ID        uint           `json:"id"`
-	Name      string         `json:"name"`
+	Name      model.UserName `json:"name"`
 	Email     model.Email    `json:"email"`
 	Password  model.Password `json:"password"`
 	CreatedAt time.Time      `json:"createdAt"`

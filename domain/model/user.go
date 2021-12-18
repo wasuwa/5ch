@@ -1,22 +1,16 @@
 package model
 
-import (
-	"errors"
-	"time"
-)
+import "time"
 
 type User struct {
 	Base
-	Name     string
+	Name     UserName
 	Email    Email
 	Password Password
 }
 
 func NewUser(name, email, password string) (*User, error) {
-	if name == "" {
-		return nil, errors.New("名前を入力してください")
-	}
-	e, err := newEmail(email)
+	n, err := newUserName(name)
 	if err != nil {
 		return nil, err
 	}
@@ -24,8 +18,12 @@ func NewUser(name, email, password string) (*User, error) {
 	if err != nil {
 		return nil, err
 	}
+	e, err := newEmail(email)
+	if err != nil {
+		return nil, err
+	}
 	u := &User{
-		Name:     name,
+		Name:     n,
 		Email:    e,
 		Password: p,
 	}
@@ -36,7 +34,7 @@ func (u *User) GetID() uint {
 	return u.ID
 }
 
-func (u *User) GetName() string {
+func (u *User) GetName() UserName {
 	return u.Name
 }
 
