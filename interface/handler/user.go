@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"bbs/domain/model"
 	"bbs/usecase"
 	"net/http"
 	"time"
@@ -9,6 +10,7 @@ import (
 )
 
 type UserHandler interface {
+	GetAll()  echo.HandlerFunc
 	Post() echo.HandlerFunc
 }
 
@@ -31,8 +33,23 @@ type responseUser struct {
 	UpdatedAt time.Time `json:"updatedAt"`
 }
 
+type responseAllUser struct {
+	Users *[]model.User `json:"users"`
+}
+
 func NewUserHandler(uu usecase.UserUsecase) UserHandler {
 	return &userHandler{userUsecase: uu}
+}
+
+func (uh *userHandler) GetAll() echo.HandlerFunc {
+	return func(c echo.Context) error {
+		users, err := uh.userUsecase.Index()
+		if err != nil {
+			return c.JSONPretty(http.StatusNotFound, err.Error(), " ")
+		}
+		res := &responseAllUser{Users: users}
+		return c.JSONPretty(http.StatusOK, res, " ")
+	}
 }
 
 func (uh *userHandler) Post() echo.HandlerFunc {
@@ -58,5 +75,6 @@ func (uh *userHandler) Post() echo.HandlerFunc {
 }
 
 func RoutingUsers(e *echo.Echo, uh UserHandler) {
+	e.GET("users", uh.GetAll())
 	e.POST("/users", uh.Post())
 }

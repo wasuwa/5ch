@@ -6,6 +6,7 @@ import (
 )
 
 type UserUsecase interface {
+	Index() (*[]model.User, error)
 	Create(name, email, password string) (*model.User, error)
 }
 
@@ -15,6 +16,14 @@ type userUsecase struct {
 
 func NewUserUsecase(ur repository.UserRepository) UserUsecase {
 	return &userUsecase{userRepository: ur}
+}
+
+func (uu *userUsecase) Index() (*[]model.User, error) {
+	users, err := uu.userRepository.Index()
+	if err != nil {
+		return nil, err
+	}
+	return users, nil
 }
 
 func (uu *userUsecase) Create(name, email, password string) (*model.User, error) {

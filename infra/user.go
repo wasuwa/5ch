@@ -3,7 +3,6 @@ package infra
 import (
 	"bbs/domain/model"
 	"bbs/domain/repository"
-	"fmt"
 
 	"gorm.io/gorm"
 )
@@ -16,9 +15,20 @@ func NewUserRepository(conn *gorm.DB) repository.UserRepository {
 	return &UserRepository{Conn: conn}
 }
 
+func (ur *UserRepository) Index() (*[]model.User, error) {
+	users := new([]model.User)
+	ur.Conn = ur.Conn.Find(users)
+	if err := ur.Conn.Error; err != nil {
+		return nil, err
+	}
+	if ur.Conn.RowsAffected == 0 {
+		return nil, gorm.ErrRecordNotFound
+	}
+	return users, nil
+}
+
 func (ur *UserRepository) Create(u *model.User) (*model.User, error) {
-	fmt.Println(u)
-	if err := ur.Conn.Debug().Create(u).Error; err != nil {
+	if err := ur.Conn.Create(u).Error; err != nil {
 		return nil, err
 	}
 	return u, nil
